@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PM2E10372.MainPage"
+             >
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Grid Padding="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="https://fundahrse.org/boletinwebs/2014febrero/wp-content/uploads/2014/02/uth.png"
+                       WidthRequest="50"
+                       HeightRequest="50"
+                       Grid.Column="0"
+                       />
+                <Label Text="SITE VISITOR APP"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Grid.Column="1"
+                       />
+
+            </Grid>
+            
+            <Label Text="IMAGEN SITIO VISITADO" 
+                   HorizontalOptions="Center"/>
+
+            <Image x:Name="imgFotoTomada" 
+                   WidthRequest="150" 
+                   HeightRequest="150"/>
+
+            <Button x:Name="btnTomarFoto"
+                    Text="Tomar Foto"
+                    WidthRequest="150"
+                    Margin="5"
+                    Clicked="btnTomarFoto_Clicked"
+                    />
+
+            <Label Text="Latitude" 
+                   HorizontalOptions="StartAndExpand"/>
+            
+            <Entry Keyboard="Numeric" 
+                   x:Name="txtLatitud" 
+                   Placeholder="Latitud" 
+                   IsEnabled="False"/>
+            
+            <Label Text="Longitud" 
+                   HorizontalOptions="StartAndExpand"/>
+            
+            <Entry Keyboard="Numeric" 
+                   x:Name="txtLongitud" 
+                   Placeholder="Longitud" 
+                   IsEnabled="False"/>
+            
+            <Label Text="Descripcion"
+                   HorizontalOptions="StartAndExpand"/>
+
+            <Editor Placeholder="Descripcion del lugar"
+                    x:Name="txtDescripcion"
+                    HeightRequest="100"
+                    HorizontalOptions="FillAndExpand"
+                    />
+            <Grid Padding="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnAgregar" 
+                        Text="Agregar"
+                        WidthRequest="150"
+                        HorizontalOptions="CenterAndExpand"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Clicked="btnAgregar_Clicked"
+                        />
+                <Button x:Name="btnListaSitios" 
+                        Text="Lista Sitios"
+                        WidthRequest="150"
+                        HorizontalOptions="CenterAndExpand"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        />
+                <Button x:Name="btnSalirApp" 
+                        Text="Salir App"
+                        WidthRequest="150"
+                        HorizontalOptions="CenterAndExpand"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1"
+                        Clicked="btnSalirApp_Clicked"
+                        />
+                
+                
+
+            </Grid>
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
