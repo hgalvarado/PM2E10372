@@ -48,7 +48,6 @@ namespace PM2E10372.Views
                         list.ItemsSource = await App.Instancia.listSitios();
                         itemSeleccionado = null;
                     }
-
                 }
                 if(accion.Equals("Ir al Mapa"))
                 {
