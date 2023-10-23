@@ -4,6 +4,8 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using AndroidX.Core.OS;
+using Plugin.CurrentActivity;
 
 namespace PM2E10372.Droid
 {
@@ -16,6 +18,7 @@ namespace PM2E10372.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
             
         }

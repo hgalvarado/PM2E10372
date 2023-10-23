@@ -91,6 +91,7 @@
                         HorizontalOptions="CenterAndExpand"
                         Grid.Column="1"
                         Grid.Row="0"
+                        Clicked="btnListaSitios_Clicked"
                         />
                 <Button x:Name="btnSalirApp" 
                         Text="Salir App"

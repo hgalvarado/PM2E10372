@@ -25,7 +25,8 @@ namespace PM2E10372
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new Views.PageListSitios());
+            //MainPage = new NavigationPage(new Views.PageListSitios());
+            MainPage = new NavigationPage(new MainPage());
         }
 
         protected override void OnStart()

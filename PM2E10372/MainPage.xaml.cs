@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Plugin.Media;
 using System.IO;
+using Xamarin.Forms.Maps;
+using System.Threading;
+using Plugin.Geolocator;
+using Xamarin.Essentials;
 
 namespace PM2E10372
 {
@@ -15,26 +19,37 @@ namespace PM2E10372
 
         Plugin.Media.Abstractions.MediaFile photo = null;
         int fotoguardada = 0;
+        private bool permissionRequested = false;
         public MainPage()
         {
             InitializeComponent();
         }
 
-        public string ImageToBase64()
+        protected async override void OnAppearing()
         {
-            if (photo != null)
+            base.OnAppearing();
+
+            var connection = Connectivity.NetworkAccess;
+            var local = CrossGeolocator.Current;
+
+            if (connection == NetworkAccess.Internet)
             {
-                using (MemoryStream memory = new MemoryStream())
+                if (local == null || !local.IsGeolocationAvailable || !local.IsGeolocationEnabled)
                 {
-                    Stream stream = photo.GetStream();
-                    stream.CopyTo(memory);
-                    byte[] data = memory.ToArray();
-                    string base64 = Convert.ToBase64String(data);
-                    return base64;
+                    // Si la geolocalización no está disponible o no está habilitada
+                    await VerificarPermisosGeolocalizacion();
+                }
+                else
+                {
+                    await ObtenerLocalizacion();
                 }
             }
-            return null;
+            else
+            {
+                await DisplayAlert("Sin Conexion", "Revise su Conexion a Internet", "OK");
+            }
         }
+
 
         public byte[] ImageToArrayByte()
         {
@@ -54,7 +69,7 @@ namespace PM2E10372
 
         private void btnSalirApp_Clicked(object sender, EventArgs e)
         {
-           
+            Environment.Exit(0);
         }
 
         private async void btnAgregar_Clicked(object sender, EventArgs e)
@@ -106,5 +121,72 @@ namespace PM2E10372
             }
 
         }
+
+        private async void btnListaSitios_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Views.PageListSitios());
+        }
+
+
+        private async Task VerificarPermisosGeolocalizacion()
+        {
+            try
+            {
+                var estadoPermisos = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                if (estadoPermisos != PermissionStatus.Granted)
+                {
+                    if (estadoPermisos == PermissionStatus.Denied && !permissionRequested)
+                    {
+                        estadoPermisos = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                        permissionRequested = true; // Marcar que hemos mostrado el diálogo.
+                    }
+                    else if (estadoPermisos == PermissionStatus.Denied)
+                    {
+                        await DisplayAlert("Aviso", "Los permisos fueron denegados, esta aplicacion necesita los permisos de Ubicacion para poder funcionar correctamente", "OK");
+                    }
+
+                }
+
+                if (estadoPermisos == PermissionStatus.Granted)
+                {
+                    await ObtenerLocalizacion();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Maneja cualquier error.
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private async Task ObtenerLocalizacion()
+        {
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                var localizacion = await Geolocation.GetLocationAsync(request);
+
+                if (localizacion != null)
+                {
+                    txtLatitud.Text = "" + localizacion.Latitude;
+                    txtLongitud.Text = "" + localizacion.Longitude;
+                }
+
+            }
+            catch (PermissionException pEx)
+            {
+                await DisplayAlert("Aviso", "Favor habilite los permisos", "OK");
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                await DisplayAlert("Aviso", fnsEx + "", "OK");
+            }
+            
+            catch (Exception ex)
+            {
+                await DisplayAlert("Aviso", ex + "", "OK");
+            }
+        }
+
     }
 }
